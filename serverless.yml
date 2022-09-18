@@ -1,0 +1,100 @@
+service: api-aws
+frameworkVersion: '2 || 3'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  lambdaHashingVersion: '20201221'
+  region: us-east-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:*
+      Resource:
+        arn:aws:dynamodb:us-east-1:860579532622:table/TaskTable
+
+Plugin: ServerlessOpenAPIDocumentation
+
+custom:
+  documentation:
+    version: '1'
+    title: 'My API'
+    description: 'This is my API'
+    models: {}
+
+functions:
+  obtenerPlanetas:
+    handler: src/star_wars/planetas.obtenerPlanetas
+    events:
+      - httpApi:
+          path: /starwars/planetas
+          method: get
+          documentation:
+            summary: "Create User"
+            description: "Creates a user and then sends a generated password email"
+            requestBody:
+              description: "A user information object"
+            requestModels:
+              application/json: "PutDocumentRequest"
+  obtenerPlaneta:
+    handler: src/star_wars/planetas.obtenerPlaneta
+    events:
+      - httpApi:
+          path: /starwars/planetas/{id}
+          method: get
+  obtenerPersonas:
+    handler: src/star_wars/personas.obtenerPersonas
+    events:
+      - httpApi:
+          path: /starwars/personas
+          method: get
+  obtenerPersona:
+    handler: src/star_wars/personas.obtenerPersona
+    events:
+      - httpApi:
+          path: /starwars/personas/{id}
+          method: get
+  crearOrganizacion:
+    handler: src/star_wars/organizaciones.crearOrganizacion
+    events:
+      - httpApi:
+          path: /starwars/organizaciones
+          method: post
+  obtenerOrganizaciones:
+    handler: src/star_wars/organizaciones.obtenerOrganizaciones
+    events:
+      - httpApi:
+          path: /starwars/organizaciones
+          method: get
+  obtenerOrganizacion:
+    handler: src/star_wars/organizaciones.obtenerOrganizacion
+    events:
+      - httpApi:
+          path: /starwars/organizaciones/{id}
+          method: get
+  actualizarOrganizacion:
+    handler: src/star_wars/organizaciones.actualizarOrganizacion
+    events:
+      - httpApi:
+          path: /starwars/organizaciones/{id}
+          method: put
+  eliminarOrganizacion:
+    handler: src/star_wars/organizaciones.eliminarOrganizacion
+    events:
+      - httpApi:
+          path: /starwars/organizaciones/{id}
+          method: delete
+
+resources:
+  Resources:
+    OrganizacionesSWTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: OrganizacionesSWTable
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
