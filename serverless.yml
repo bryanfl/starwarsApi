@@ -13,7 +13,8 @@ provider:
       Resource:
         arn:aws:dynamodb:us-east-1:860579532622:table/OrganizacionesSWTable
 
-Plugin: ServerlessOpenAPIDocumentation
+plugins:
+  - ServerlessOpenAPIDocumentation
 
 custom:
   documentation:
@@ -29,13 +30,8 @@ functions:
       - httpApi:
           path: /starwars/planetas
           method: get
-          documentation:
-            summary: "Create User"
-            description: "Creates a user and then sends a generated password email"
-            requestBody:
-              description: "A user information object"
-            requestModels:
-              application/json: "PutDocumentRequest"
+          #documentation: ${file(serverless.doc.yml):endpoints.myFunc}
+
   obtenerPlaneta:
     handler: src/star_wars/planetas.obtenerPlaneta
     events:
