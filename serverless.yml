@@ -11,7 +11,7 @@ provider:
       Action:
         - dynamodb:*
       Resource:
-        arn:aws:dynamodb:us-east-1:860579532622:table/TaskTable
+        arn:aws:dynamodb:us-east-1:860579532622:table/OrganizacionesSWTable
 
 Plugin: ServerlessOpenAPIDocumentation
 
